@@ -17,20 +17,20 @@ BOX_WIDTH = 800
 BOX_HEIGHT = 600
 
 """ The initial position x(0) of the ball."""
-_INITIAL_X = 25
+__INITIAL_X = 25
 """ The initial position y(0) of the ball."""
-_INITIAL_Y = 25
+__INITIAL_Y = 25
 """ The initial speed V(0) of the ball."""
-_INITIAL_SPEED = 140
+__INITIAL_SPEED = 140
 """ The initial angle α of the ball."""
-_INITIAL_ANGLE = 60
+__INITIAL_ANGLE = 60
 """ The radius of the ball."""
-_INITIAL_RADIUS = 15
+__INITIAL_RADIUS = 15
 
 """ The ball at time 0."""
-ball = {'x': _INITIAL_X,
-        'y': _INITIAL_Y,
-        'speedX': _INITIAL_SPEED * math.cos(math.radians(_INITIAL_ANGLE)),
-        'speedY': _INITIAL_SPEED * math.sin(math.radians(_INITIAL_ANGLE)),
-        'angle': _INITIAL_ANGLE,
-        'radius': _INITIAL_RADIUS}
+ball = {'x': __INITIAL_X,
+        'y': __INITIAL_Y,
+        'speedX': __INITIAL_SPEED * math.cos(math.radians(__INITIAL_ANGLE)),
+        'speedY': __INITIAL_SPEED * math.sin(math.radians(__INITIAL_ANGLE)),
+        'angle': __INITIAL_ANGLE,
+        'radius': __INITIAL_RADIUS}
