@@ -68,7 +68,7 @@ def __moveBall():
         BallBounceModel.ball['speedX'] = BallBounceModel.ball['speedX'] * BallBounceModel.FRICTION_X
 
 
-def changeStartBall(x, y, speed, angle, radius):
+def changeInitialData(x, y, speed, angle, radius, gravity, frictionX, frictionGround, timeInterval):
     """ Change the initial values."""
     BallBounceModel.ball['x'] = x
     BallBounceModel.ball['y'] = y
@@ -76,6 +76,10 @@ def changeStartBall(x, y, speed, angle, radius):
     BallBounceModel.ball['speedY'] = speed * math.sin(math.radians(angle))
     BallBounceModel.ball['angle'] = angle
     BallBounceModel.ball['radius'] = radius
+    BallBounceModel.GRAVITY = gravity
+    BallBounceModel.FRICTION_X = frictionX
+    BallBounceModel.FRICTION_Y = frictionGround
+    BallBounceModel.INTERVAL = timeInterval
     print(BallBounceModel.ball)
 
 
