@@ -60,6 +60,7 @@ def __getBallY1Transformed():
 
 
 def __on_closing():
+    """ Close properly the windows."""
     BallBounceController.stop()
     __windows.destroy()
 
@@ -102,11 +103,13 @@ def update():
 
 
 def throwBall(ballWindows, x, y, speed, angle, radius):
+    """ Creates an circle on the windows at the ball's coordinates."""
     BallBounceController.changeStartBall(x.get(), y.get(), speed.get(), angle.get(), radius.get())
     ballWindows.destroy()
 
 
 def ballForm():
+    """ Creates a form to change the initial values."""
     ballWindows = tkinter.Tk()
     ballWindows.title("Ball Bounce")
     ballWindows.geometry("250x140")

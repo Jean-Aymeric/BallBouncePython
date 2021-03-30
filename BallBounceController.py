@@ -14,6 +14,7 @@ __run = True
 
 
 def stop():
+    """ Stops the gameloop."""
     global __run
     __run = False
 
@@ -68,6 +69,7 @@ def __moveBall():
 
 
 def changeStartBall(x, y, speed, angle, radius):
+    """ Change the initial values."""
     BallBounceModel.ball['x'] = x
     BallBounceModel.ball['y'] = y
     BallBounceModel.ball['speedX'] = speed * math.cos(math.radians(angle))
@@ -79,6 +81,8 @@ def changeStartBall(x, y, speed, angle, radius):
 
 def ballBounce():
     """ The 'GameLoop' function of the controller."""
+
+    """ Change the initial values."""
     BallBounceView.ballForm()
     BallBounceView.initialize()
     while __run:
