@@ -15,6 +15,7 @@ View : This module contains all the functions to show the ball in a windows
 """
 import tkinter
 import BallBounceModel
+import BallBounceController
 
 __WINDOWS_ZOOM = 1.3
 __WINDOWS_WIDTH = int(BallBounceModel.BOX_WIDTH * __WINDOWS_ZOOM)
@@ -91,3 +92,46 @@ def update():
                     __getBallX1Transformed(),
                     __getBallY1Transformed())
     __windows.update()
+
+
+def throwBall(ballWindows, x, y, speed, angle, radius):
+    BallBounceController.changeStartBall(x.get(), y.get(), speed.get(), angle.get(), radius.get())
+    ballWindows.destroy()
+
+
+def ballForm():
+    ballWindows = tkinter.Tk()
+    ballWindows.title("Ball Bounce")
+    ballWindows.geometry("250x140")
+
+    x = tkinter.DoubleVar()
+    x.set(BallBounceModel.INITIAL_X)
+    y = tkinter.DoubleVar()
+    y.set(BallBounceModel.INITIAL_Y)
+    speed = tkinter.DoubleVar()
+    speed.set(BallBounceModel.INITIAL_SPEED)
+    angle = tkinter.DoubleVar()
+    angle.set(BallBounceModel.INITIAL_ANGLE)
+    radius = tkinter.DoubleVar()
+    radius.set(BallBounceModel.INITIAL_RADIUS)
+
+    tkinter.Label(ballWindows, text='x =').grid(row=0, column=0)
+    tkinter.Entry(ballWindows, textvariable=x).grid(row=0, column=1)
+
+    tkinter.Label(ballWindows, text='y =').grid(row=1, column=0)
+    tkinter.Entry(ballWindows, textvariable=y).grid(row=1, column=1)
+
+    tkinter.Label(ballWindows, text='speed =').grid(row=2, column=0)
+    tkinter.Entry(ballWindows, textvariable=speed).grid(row=2, column=1)
+
+    tkinter.Label(ballWindows, text='angle =').grid(row=3, column=0)
+    tkinter.Entry(ballWindows, textvariable=angle).grid(row=3, column=1)
+
+    tkinter.Label(ballWindows, text='radius =').grid(row=4, column=0)
+    tkinter.Entry(ballWindows, textvariable=radius).grid(row=4, column=1)
+
+    tkinter.Button(ballWindows,
+                   text='Throw the ball',
+                   command=lambda: throwBall(ballWindows, x, y, speed, angle, radius)).grid(row=5, column=1)
+
+    ballWindows.mainloop()
