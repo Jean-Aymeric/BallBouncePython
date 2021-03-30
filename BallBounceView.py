@@ -59,6 +59,11 @@ def __getBallY1Transformed():
     return __WINDOWS_HEIGHT - ((BallBounceModel.ball['y'] + BallBounceModel.ball['radius']) * __WINDOWS_ZOOM)
 
 
+def __on_closing():
+    BallBounceController.stop()
+    __windows.destroy()
+
+
 def __createBall():
     """ Creates an circle on the windows at the ball's coordinates."""
     global __canvas
@@ -71,6 +76,8 @@ def __createBall():
                                       __getBallY1Transformed(),
                                       fill='RED',
                                       outline='RED')
+
+    __windows.protocol("WM_DELETE_WINDOW", __on_closing)
     __windows.update()
 
 
