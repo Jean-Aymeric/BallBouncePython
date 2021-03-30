@@ -16,6 +16,7 @@ View : This module contains all the functions to show the ball in a windows
 import tkinter
 import BallBounceModel
 import BallBounceController
+import math
 
 __WINDOWS_ZOOM = 1.3
 __WINDOWS_WIDTH = int(BallBounceModel.BOX_WIDTH * __WINDOWS_ZOOM)
@@ -24,6 +25,10 @@ __WINDOWS_HEIGHT = int(BallBounceModel.BOX_HEIGHT * __WINDOWS_ZOOM)
 __windows = 0
 __canvas = 0
 __ballDraw = 0
+__arrow = 0
+__showBall = BallBounceModel.INITIAL_SHOW_BALL
+__showVector = BallBounceModel.INITIAL_SHOW_VECTOR
+__traceVector = BallBounceModel.INITIAL_TRACE_VECTOR
 
 
 def __createWindows():
@@ -36,6 +41,8 @@ def __createWindows():
     __windows.geometry(str(__WINDOWS_WIDTH) + "x" + str(__WINDOWS_HEIGHT))
     __canvas = tkinter.Canvas(__windows, bg="black")
     __canvas.pack(fill="both", expand=True)
+
+    __windows.protocol("WM_DELETE_WINDOW", __on_closing)
     __windows.update()
 
 
@@ -59,6 +66,28 @@ def __getBallY1Transformed():
     return __WINDOWS_HEIGHT - ((BallBounceModel.ball['y'] + BallBounceModel.ball['radius']) * __WINDOWS_ZOOM)
 
 
+def __getBallX0Arrow():
+    """ Converts physical coordinate x to x0Arrow."""
+    return BallBounceModel.ball['x'] * __WINDOWS_ZOOM
+
+
+def __getBallX1Arrow():
+    """ Converts physical coordinate x to x1Arrow."""
+    return (BallBounceModel.ball['x'] + math.cos(math.radians(BallBounceModel.ball['angle']))
+            * BallBounceModel.ball['speedX'] * 2) * __WINDOWS_ZOOM
+
+
+def __getBallY0Arrow():
+    """ Converts physical coordinate y to yArrow."""
+    return __WINDOWS_HEIGHT - ((BallBounceModel.ball['y']) * __WINDOWS_ZOOM)
+
+
+def __getBallY1Arrow():
+    """ Converts physical coordinate y to yArrow."""
+    return __WINDOWS_HEIGHT - ((BallBounceModel.ball['y'] + math.sin(math.radians(BallBounceModel.ball['angle']))
+                                * BallBounceModel.ball['speedY'] * 2) * __WINDOWS_ZOOM)
+
+
 def __on_closing():
     """ Close properly the windows."""
     BallBounceController.stop()
@@ -68,7 +97,6 @@ def __on_closing():
 def __createBall():
     """ Creates an circle on the windows at the ball's coordinates."""
     global __canvas
-    global __windows
     global __ballDraw
 
     __ballDraw = __canvas.create_oval(__getBallX0Transformed(),
@@ -78,14 +106,27 @@ def __createBall():
                                       fill='RED',
                                       outline='RED')
 
-    __windows.protocol("WM_DELETE_WINDOW", __on_closing)
-    __windows.update()
+
+def __createArrow():
+    global __canvas
+    global __arrow
+
+    __arrow = __canvas.create_line(__getBallX0Arrow(),
+                                   __getBallY0Arrow(),
+                                   __getBallX1Arrow(),
+                                   __getBallY1Arrow(),
+                                   fill='white',
+                                   width=1,
+                                   arrow=tkinter.LAST)
 
 
 def initialize():
     """ Creates an circle on the windows at the ball's coordinates."""
     __createWindows()
-    __createBall()
+    if __showBall:
+        __createBall()
+    if __showVector:
+        __createArrow()
 
 
 def update():
@@ -93,19 +134,30 @@ def update():
     global __canvas
     global __windows
     global __ballDraw
+    global __arrow
 
-    __canvas.coords(__ballDraw,
-                    __getBallX0Transformed(),
-                    __getBallY0Transformed(),
-                    __getBallX1Transformed(),
-                    __getBallY1Transformed())
+    if __showBall:
+        __canvas.coords(__ballDraw, __getBallX0Transformed(), __getBallY0Transformed(), __getBallX1Transformed(),
+                        __getBallY1Transformed())
+    if __showVector:
+        __canvas.coords(__arrow, __getBallX0Arrow(), __getBallY0Arrow(), __getBallX1Arrow(), __getBallY1Arrow())
+    if __traceVector:
+        __createArrow()
     __windows.update()
 
 
-def throwBall(ballWindows, x, y, speed, angle, radius, gravity, frictionX, frictionGround, timeInterval):
+def throwBall(ballWindows, x, y, speed, angle, radius, gravity, frictionX, frictionGround, timeInterval, showBall,
+              showVector, traceVector):
     """ Creates an circle on the windows at the ball's coordinates."""
+    global __showBall
+    global __showVector
+    global __traceVector
+
     BallBounceController.changeInitialData(x.get(), y.get(), speed.get(), angle.get(), radius.get(), gravity.get(),
                                            frictionX.get(), frictionGround.get(), timeInterval.get())
+    __showBall = showBall.get()
+    __showVector = showVector.get()
+    __traceVector = traceVector.get()
     ballWindows.destroy()
 
 
@@ -113,7 +165,7 @@ def ballForm():
     """ Creates a form to change the initial values."""
     ballWindows = tkinter.Tk()
     ballWindows.title("Ball Bounce")
-    ballWindows.geometry("250x230")
+    ballWindows.geometry("250x300")
 
     x = tkinter.DoubleVar()
     x.set(BallBounceModel.INITIAL_X)
@@ -133,6 +185,12 @@ def ballForm():
     frictionGround.set(BallBounceModel.FRICTION_Y)
     timeInterval = tkinter.DoubleVar()
     timeInterval.set(BallBounceModel.INTERVAL)
+    showBall = tkinter.BooleanVar()
+    showBall.set(BallBounceModel.INITIAL_SHOW_BALL)
+    showVector = tkinter.BooleanVar()
+    showVector.set(BallBounceModel.INITIAL_SHOW_VECTOR)
+    traceVector = tkinter.BooleanVar()
+    traceVector.set(BallBounceModel.INITIAL_TRACE_VECTOR)
 
     tkinter.Label(ballWindows, text='x =').grid(row=0, column=0)
     tkinter.Entry(ballWindows, textvariable=x).grid(row=0, column=1)
@@ -152,14 +210,23 @@ def ballForm():
     tkinter.Label(ballWindows, text='gravity =').grid(row=5, column=0)
     tkinter.Entry(ballWindows, textvariable=gravity).grid(row=5, column=1)
 
-    tkinter.Label(ballWindows, text='frictionX =').grid(row=6, column=0)
+    tkinter.Label(ballWindows, text='Friction X =').grid(row=6, column=0)
     tkinter.Entry(ballWindows, textvariable=frictionX).grid(row=6, column=1)
 
-    tkinter.Label(ballWindows, text='frictionGround =').grid(row=7, column=0)
+    tkinter.Label(ballWindows, text='Friction Ground =').grid(row=7, column=0)
     tkinter.Entry(ballWindows, textvariable=frictionGround).grid(row=7, column=1)
 
-    tkinter.Label(ballWindows, text='timeInterval =').grid(row=8, column=0)
+    tkinter.Label(ballWindows, text='Time Interval =').grid(row=8, column=0)
     tkinter.Entry(ballWindows, textvariable=timeInterval).grid(row=8, column=1)
+
+    tkinter.Label(ballWindows, text='Show ball =').grid(row=9, column=0)
+    tkinter.Checkbutton(ballWindows, variable=showBall).grid(row=9, column=1)
+
+    tkinter.Label(ballWindows, text='Show vector =').grid(row=10, column=0)
+    tkinter.Checkbutton(ballWindows, variable=showVector).grid(row=10, column=1)
+
+    tkinter.Label(ballWindows, text='Trace vector =').grid(row=11, column=0)
+    tkinter.Checkbutton(ballWindows, variable=traceVector).grid(row=11, column=1)
 
     tkinter.Button(ballWindows,
                    text='Throw the ball',
@@ -172,7 +239,10 @@ def ballForm():
                                              gravity,
                                              frictionX,
                                              frictionGround,
-                                             timeInterval)
-                   ).grid(row=9, column=1)
+                                             timeInterval,
+                                             showBall,
+                                             showVector,
+                                             traceVector)
+                   ).grid(row=12, column=1)
 
     ballWindows.mainloop()
