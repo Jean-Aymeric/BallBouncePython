@@ -65,11 +65,11 @@ def __createBall():
     global __ballDraw
 
     __ballDraw = __canvas.create_oval(__getBallX0Transformed(),
-                                    __getBallY0Transformed(),
-                                    __getBallX1Transformed(),
-                                    __getBallY1Transformed(),
-                                    fill='RED',
-                                    outline='RED')
+                                      __getBallY0Transformed(),
+                                      __getBallX1Transformed(),
+                                      __getBallY1Transformed(),
+                                      fill='RED',
+                                      outline='RED')
     __windows.update()
 
 
@@ -86,8 +86,8 @@ def update():
     global __ballDraw
 
     __canvas.coords(__ballDraw,
-                   __getBallX0Transformed(),
-                   __getBallY0Transformed(),
-                   __getBallX1Transformed(),
-                   __getBallY1Transformed())
+                    __getBallX0Transformed(),
+                    __getBallY0Transformed(),
+                    __getBallX1Transformed(),
+                    __getBallY1Transformed())
     __windows.update()
