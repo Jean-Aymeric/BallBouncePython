@@ -102,9 +102,10 @@ def update():
     __windows.update()
 
 
-def throwBall(ballWindows, x, y, speed, angle, radius):
+def throwBall(ballWindows, x, y, speed, angle, radius, gravity, frictionX, frictionGround, timeInterval):
     """ Creates an circle on the windows at the ball's coordinates."""
-    BallBounceController.changeStartBall(x.get(), y.get(), speed.get(), angle.get(), radius.get())
+    BallBounceController.changeInitialData(x.get(), y.get(), speed.get(), angle.get(), radius.get(), gravity.get(),
+                                           frictionX.get(), frictionGround.get(), timeInterval.get())
     ballWindows.destroy()
 
 
@@ -112,7 +113,7 @@ def ballForm():
     """ Creates a form to change the initial values."""
     ballWindows = tkinter.Tk()
     ballWindows.title("Ball Bounce")
-    ballWindows.geometry("250x140")
+    ballWindows.geometry("250x230")
 
     x = tkinter.DoubleVar()
     x.set(BallBounceModel.INITIAL_X)
@@ -124,6 +125,14 @@ def ballForm():
     angle.set(BallBounceModel.INITIAL_ANGLE)
     radius = tkinter.DoubleVar()
     radius.set(BallBounceModel.INITIAL_RADIUS)
+    gravity = tkinter.DoubleVar()
+    gravity.set(BallBounceModel.GRAVITY)
+    frictionX = tkinter.DoubleVar()
+    frictionX.set(BallBounceModel.FRICTION_X)
+    frictionGround = tkinter.DoubleVar()
+    frictionGround.set(BallBounceModel.FRICTION_Y)
+    timeInterval = tkinter.DoubleVar()
+    timeInterval.set(BallBounceModel.INTERVAL)
 
     tkinter.Label(ballWindows, text='x =').grid(row=0, column=0)
     tkinter.Entry(ballWindows, textvariable=x).grid(row=0, column=1)
@@ -140,8 +149,30 @@ def ballForm():
     tkinter.Label(ballWindows, text='radius =').grid(row=4, column=0)
     tkinter.Entry(ballWindows, textvariable=radius).grid(row=4, column=1)
 
+    tkinter.Label(ballWindows, text='gravity =').grid(row=5, column=0)
+    tkinter.Entry(ballWindows, textvariable=gravity).grid(row=5, column=1)
+
+    tkinter.Label(ballWindows, text='frictionX =').grid(row=6, column=0)
+    tkinter.Entry(ballWindows, textvariable=frictionX).grid(row=6, column=1)
+
+    tkinter.Label(ballWindows, text='frictionGround =').grid(row=7, column=0)
+    tkinter.Entry(ballWindows, textvariable=frictionGround).grid(row=7, column=1)
+
+    tkinter.Label(ballWindows, text='timeInterval =').grid(row=8, column=0)
+    tkinter.Entry(ballWindows, textvariable=timeInterval).grid(row=8, column=1)
+
     tkinter.Button(ballWindows,
                    text='Throw the ball',
-                   command=lambda: throwBall(ballWindows, x, y, speed, angle, radius)).grid(row=5, column=1)
+                   command=lambda: throwBall(ballWindows,
+                                             x,
+                                             y,
+                                             speed,
+                                             angle,
+                                             radius,
+                                             gravity,
+                                             frictionX,
+                                             frictionGround,
+                                             timeInterval)
+                   ).grid(row=9, column=1)
 
     ballWindows.mainloop()
