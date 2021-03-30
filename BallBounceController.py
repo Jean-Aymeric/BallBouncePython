@@ -10,8 +10,14 @@ import BallBounceModel
 import time
 import math
 
+__run = True
 
-def moveBall():
+
+def stop():
+    global __run
+    __run = False
+
+def __moveBall():
     """ Calculates the new position (x,y), new speed (speedX, speedY) of the ball.
         Also controls its bounce.
             x(t+1) = x(t) + Vx(t) * cos(α) * Δt
@@ -61,12 +67,23 @@ def moveBall():
         BallBounceModel.ball['speedX'] = BallBounceModel.ball['speedX'] * BallBounceModel.FRICTION_X
 
 
+def changeStartBall(x, y, speed, angle, radius):
+    BallBounceModel.ball['x'] = x
+    BallBounceModel.ball['y'] = y
+    BallBounceModel.ball['speedX'] = speed * math.cos(math.radians(angle))
+    BallBounceModel.ball['speedY'] = speed * math.sin(math.radians(angle))
+    BallBounceModel.ball['angle'] = angle
+    BallBounceModel.ball['radius'] = radius
+    print(BallBounceModel.ball)
+
+
 def ballBounce():
     """ The 'GameLoop' function of the controller."""
+    BallBounceView.ballForm()
     BallBounceView.initialize()
-    while 1:
+    while __run:
         """ Moves the ball in the Model."""
-        moveBall()
+        __moveBall()
         """ Asks the view to update its window."""
         BallBounceView.update()
         """ Wait a little."""
