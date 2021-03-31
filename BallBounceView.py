@@ -17,6 +17,7 @@ import tkinter
 import BallBounceModel
 import BallBounceController
 import math
+import random
 
 __WINDOWS_ZOOM = 1.3
 __WINDOWS_WIDTH = int(BallBounceModel.BOX_WIDTH * __WINDOWS_ZOOM)
@@ -148,13 +149,34 @@ def update():
 
 def throwBall(ballWindows, x, y, speed, angle, radius, gravity, frictionX, frictionGround, timeInterval, showBall,
               showVector, traceVector):
-    """ Creates an circle on the windows at the ball's coordinates."""
+    """ Close the ball's form and initializes the values with user's entries."""
     global __showBall
     global __showVector
     global __traceVector
 
     BallBounceController.changeInitialData(x.get(), y.get(), speed.get(), angle.get(), radius.get(), gravity.get(),
                                            frictionX.get(), frictionGround.get(), timeInterval.get())
+    __showBall = showBall.get()
+    __showVector = showVector.get()
+    __traceVector = traceVector.get()
+    ballWindows.destroy()
+
+
+def throwBallRandom(ballWindows, showBall, showVector, traceVector):
+    """ Close the ball's form and initializes the values with random entries."""
+    global __showBall
+    global __showVector
+    global __traceVector
+
+    BallBounceController.changeInitialData(random.randint(0, BallBounceModel.BOX_WIDTH),
+                                           random.randint(0, BallBounceModel.BOX_HEIGHT),
+                                           random.randint(0, 200),
+                                           random.randint(0, 180),
+                                           random.randint(1, 200),
+                                           random.randint(0, 2000) / 100,
+                                           random.randint(80, 100) / 100,
+                                           random.randint(80, 100) / 100,
+                                           random.randint(0, 10) / 10 + 0.1)
     __showBall = showBall.get()
     __showVector = showVector.get()
     __traceVector = traceVector.get()
@@ -243,6 +265,11 @@ def ballForm():
                                              showBall,
                                              showVector,
                                              traceVector)
+                   ).grid(row=12, column=0)
+
+    tkinter.Button(ballWindows,
+                   text='Full random',
+                   command=lambda: throwBallRandom(ballWindows, showBall, showVector, traceVector)
                    ).grid(row=12, column=1)
 
     ballWindows.mainloop()

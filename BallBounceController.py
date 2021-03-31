@@ -80,7 +80,6 @@ def changeInitialData(x, y, speed, angle, radius, gravity, frictionX, frictionGr
     BallBounceModel.FRICTION_X = frictionX
     BallBounceModel.FRICTION_Y = frictionGround
     BallBounceModel.INTERVAL = timeInterval
-    print(BallBounceModel.ball)
 
 
 def ballBounce():
