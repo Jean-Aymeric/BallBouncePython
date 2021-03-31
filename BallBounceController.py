@@ -18,6 +18,7 @@ def stop():
     global __run
     __run = False
 
+
 def __moveBall():
     """ Calculates the new position (x,y), new speed (speedX, speedY) of the ball.
         Also controls its bounce.
@@ -31,13 +32,12 @@ def __moveBall():
     bounceX = False
 
     """ Calculates the new x, x(t+1)."""
-    BallBounceModel.ball['x'] += BallBounceModel.ball['speedX'] \
-                                 * math.cos(math.radians(BallBounceModel.ball['angle'])) \
-                                 * BallBounceModel.INTERVAL
+    BallBounceModel.ball['x'] += BallBounceModel.ball['speedX'] * math.cos(
+        math.radians(BallBounceModel.ball['angle'])) * BallBounceModel.INTERVAL
 
     """ Calculates the new y, y(t+1)."""
-    BallBounceModel.ball['y'] += BallBounceModel.INTERVAL * \
-                                 (BallBounceModel.ball['speedY'] - (BallBounceModel.GRAVITY * BallBounceModel.INTERVAL))
+    BallBounceModel.ball['y'] += BallBounceModel.INTERVAL * (
+                BallBounceModel.ball['speedY'] - (BallBounceModel.GRAVITY * BallBounceModel.INTERVAL))
 
     """ Calculates the new speedY, Vy(t+1)."""
     BallBounceModel.ball['speedY'] += - BallBounceModel.GRAVITY * BallBounceModel.INTERVAL

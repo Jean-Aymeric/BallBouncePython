@@ -23,10 +23,10 @@ __WINDOWS_ZOOM = 1.3
 __WINDOWS_WIDTH = int(BallBounceModel.BOX_WIDTH * __WINDOWS_ZOOM)
 __WINDOWS_HEIGHT = int(BallBounceModel.BOX_HEIGHT * __WINDOWS_ZOOM)
 
-__windows = 0
-__canvas = 0
-__ballDraw = 0
-__arrow = 0
+__root: tkinter.Tk
+__canvas = tkinter.Canvas
+__ballDraw: tkinter.Canvas
+__arrow: tkinter.Canvas
 __showBall = BallBounceModel.INITIAL_SHOW_BALL
 __showVector = BallBounceModel.INITIAL_SHOW_VECTOR
 __traceVector = BallBounceModel.INITIAL_TRACE_VECTOR
@@ -34,17 +34,19 @@ __traceVector = BallBounceModel.INITIAL_TRACE_VECTOR
 
 def __createWindows():
     """ Creates the windows and show it."""
-    global __windows
     global __canvas
+    global __root
 
-    __windows = tkinter.Tk()
-    __windows.title("Ball Bounce")
-    __windows.geometry(str(__WINDOWS_WIDTH) + "x" + str(__WINDOWS_HEIGHT))
-    __canvas = tkinter.Canvas(__windows, bg="black")
+    __root = tkinter.Tk()
+    __canvas = tkinter.Canvas(__root)
+    __root.title("Ball Bounce")
+    __root.geometry(str(__WINDOWS_WIDTH) + "x" + str(__WINDOWS_HEIGHT))
+    __canvas.configure(bg="black")
     __canvas.pack(fill="both", expand=True)
 
-    __windows.protocol("WM_DELETE_WINDOW", __on_closing)
-    __windows.update()
+    __root.protocol("WM_DELETE_WINDOW", __on_closing)
+    __root.deiconify()
+    __root.update()
 
 
 def __getBallX0Transformed():
@@ -92,7 +94,7 @@ def __getBallY1Arrow():
 def __on_closing():
     """ Close properly the windows."""
     BallBounceController.stop()
-    __windows.destroy()
+    __root.destroy()
 
 
 def __createBall():
@@ -133,7 +135,7 @@ def initialize():
 def update():
     """ Replaces the coordinate's circle with those of the balls."""
     global __canvas
-    global __windows
+    global __root
     global __ballDraw
     global __arrow
 
@@ -144,7 +146,7 @@ def update():
         __canvas.coords(__arrow, __getBallX0Arrow(), __getBallY0Arrow(), __getBallX1Arrow(), __getBallY1Arrow())
     if __traceVector:
         __createArrow()
-    __windows.update()
+    __root.update()
 
 
 def throwBall(ballWindows, x, y, speed, angle, radius, gravity, frictionX, frictionGround, timeInterval, showBall,
@@ -189,30 +191,18 @@ def ballForm():
     ballWindows.title("Ball Bounce")
     ballWindows.geometry("250x300")
 
-    x = tkinter.DoubleVar()
-    x.set(BallBounceModel.INITIAL_X)
-    y = tkinter.DoubleVar()
-    y.set(BallBounceModel.INITIAL_Y)
-    speed = tkinter.DoubleVar()
-    speed.set(BallBounceModel.INITIAL_SPEED)
-    angle = tkinter.DoubleVar()
-    angle.set(BallBounceModel.INITIAL_ANGLE)
-    radius = tkinter.DoubleVar()
-    radius.set(BallBounceModel.INITIAL_RADIUS)
-    gravity = tkinter.DoubleVar()
-    gravity.set(BallBounceModel.GRAVITY)
-    frictionX = tkinter.DoubleVar()
-    frictionX.set(BallBounceModel.FRICTION_X)
-    frictionGround = tkinter.DoubleVar()
-    frictionGround.set(BallBounceModel.FRICTION_Y)
-    timeInterval = tkinter.DoubleVar()
-    timeInterval.set(BallBounceModel.INTERVAL)
-    showBall = tkinter.BooleanVar()
-    showBall.set(BallBounceModel.INITIAL_SHOW_BALL)
-    showVector = tkinter.BooleanVar()
-    showVector.set(BallBounceModel.INITIAL_SHOW_VECTOR)
-    traceVector = tkinter.BooleanVar()
-    traceVector.set(BallBounceModel.INITIAL_TRACE_VECTOR)
+    x = tkinter.DoubleVar(value=BallBounceModel.INITIAL_X)
+    y = tkinter.DoubleVar(value=BallBounceModel.INITIAL_Y)
+    speed = tkinter.DoubleVar(value=BallBounceModel.INITIAL_SPEED)
+    angle = tkinter.DoubleVar(value=BallBounceModel.INITIAL_ANGLE)
+    radius = tkinter.DoubleVar(value=BallBounceModel.INITIAL_RADIUS)
+    gravity = tkinter.DoubleVar(value=BallBounceModel.GRAVITY)
+    frictionX = tkinter.DoubleVar(value=BallBounceModel.FRICTION_X)
+    frictionGround = tkinter.DoubleVar(value=BallBounceModel.FRICTION_Y)
+    timeInterval = tkinter.DoubleVar(value=BallBounceModel.INTERVAL)
+    showBall = tkinter.BooleanVar(value=BallBounceModel.INITIAL_SHOW_BALL)
+    showVector = tkinter.BooleanVar(value=BallBounceModel.INITIAL_SHOW_VECTOR)
+    traceVector = tkinter.BooleanVar(value=BallBounceModel.INITIAL_TRACE_VECTOR)
 
     tkinter.Label(ballWindows, text='x =').grid(row=0, column=0)
     tkinter.Entry(ballWindows, textvariable=x).grid(row=0, column=1)
