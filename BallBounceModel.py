@@ -26,6 +26,12 @@ INITIAL_SPEED = 140
 INITIAL_ANGLE = 60
 """ The radius of the ball."""
 INITIAL_RADIUS = 15
+""" The default value to show vector on ball."""
+INITIAL_SHOW_BALL = True
+""" The default value to show vector on ball."""
+INITIAL_SHOW_VECTOR = False
+""" The default value to trace vector during the move."""
+INITIAL_TRACE_VECTOR = False
 
 """ The ball at time 0."""
 ball = {'x': INITIAL_X,
