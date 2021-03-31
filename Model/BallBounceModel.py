@@ -4,17 +4,17 @@ Model : This module contains all the constants and the ball
 import math
 
 """ The gravity, g."""
-GRAVITY = 9.80665
+gravity = 9.80665
 """ The time interval, Δt."""
-INTERVAL = 0.4
+interval = 0.4
 """ The friction on left an right, frictionX."""
-FRICTION_X = 0.95
+frictionX = 0.95
 """ The friction on ground, frictionY."""
-FRICTION_Y = 0.85
+frictionY = 0.85
 """ The box width in which the ball bounces."""
-BOX_WIDTH = 800
+boxWidth = 800
 """ The box height in which the ball bounces."""
-BOX_HEIGHT = 600
+boxHeight = 600
 
 """ The initial position x(0) of the ball."""
 INITIAL_X = 25
@@ -40,3 +40,17 @@ ball = {'x': INITIAL_X,
         'speedY': INITIAL_SPEED * math.sin(math.radians(INITIAL_ANGLE)),
         'angle': INITIAL_ANGLE,
         'radius': INITIAL_RADIUS}
+
+
+def changeInitialData(x, y, speed, angle, radius, gravity, frictionX, frictionGround, timeInterval):
+    """ Change the initial values."""
+    ball['x'] = x
+    ball['y'] = y
+    ball['speedX'] = speed * math.cos(math.radians(angle))
+    ball['speedY'] = speed * math.sin(math.radians(angle))
+    ball['angle'] = angle
+    ball['radius'] = radius
+    GRAVITY = gravity
+    FRICTION_X = frictionX
+    FRICTION_Y = frictionGround
+    INTERVAL = timeInterval
