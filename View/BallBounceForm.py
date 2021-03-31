@@ -3,7 +3,6 @@ from Controller import BallBounceController
 import math
 import tkinter
 
-
 __WINDOWS_ZOOM = 1.3
 __WINDOWS_WIDTH = int(BallBounceModel.boxWidth * __WINDOWS_ZOOM)
 __WINDOWS_HEIGHT = int(BallBounceModel.boxHeight * __WINDOWS_ZOOM)
@@ -12,9 +11,9 @@ __root: tkinter.Tk
 __canvas = tkinter.Canvas
 __ballDraw: tkinter.Canvas
 __arrow: tkinter.Canvas
-__showBall = BallBounceModel.INITIAL_SHOW_BALL
-__showVector = BallBounceModel.INITIAL_SHOW_VECTOR
-__traceVector = BallBounceModel.INITIAL_TRACE_VECTOR
+__showBall: int
+__showVector: int
+__traceVector: int
 
 
 def __createWindows():
@@ -111,9 +110,9 @@ def __createArrow():
 def ballBounceForm():
     """ Creates an circle on the windows at the ball's coordinates."""
     __createWindows()
-    if __showBall:
+    if BallBounceModel.showBall:
         __createBall()
-    if __showVector:
+    if BallBounceModel.showVector:
         __createArrow()
 
 
@@ -124,12 +123,11 @@ def update():
     global __ballDraw
     global __arrow
 
-    if __showBall:
+    if BallBounceModel.showBall:
         __canvas.coords(__ballDraw, __getBallX0Transformed(), __getBallY0Transformed(), __getBallX1Transformed(),
                         __getBallY1Transformed())
-    if __showVector:
+    if BallBounceModel.showVector:
         __canvas.coords(__arrow, __getBallX0Arrow(), __getBallY0Arrow(), __getBallX1Arrow(), __getBallY1Arrow())
-    if __traceVector:
+    if BallBounceModel.traceVector:
         __createArrow()
     __root.update()
-

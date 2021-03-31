@@ -15,6 +15,12 @@ frictionY = 0.85
 boxWidth = 800
 """ The box height in which the ball bounces."""
 boxHeight = 600
+""" The box height in which the ball bounces."""
+showBall = True
+""" The box height in which the ball bounces."""
+showVector = False
+""" The box height in which the ball bounces."""
+traceVector = False
 
 """ The initial position x(0) of the ball."""
 INITIAL_X = 25
@@ -40,17 +46,3 @@ ball = {'x': INITIAL_X,
         'speedY': INITIAL_SPEED * math.sin(math.radians(INITIAL_ANGLE)),
         'angle': INITIAL_ANGLE,
         'radius': INITIAL_RADIUS}
-
-
-def changeInitialData(x, y, speed, angle, radius, gravity, frictionX, frictionGround, timeInterval):
-    """ Change the initial values."""
-    ball['x'] = x
-    ball['y'] = y
-    ball['speedX'] = speed * math.cos(math.radians(angle))
-    ball['speedY'] = speed * math.sin(math.radians(angle))
-    ball['angle'] = angle
-    ball['radius'] = radius
-    GRAVITY = gravity
-    FRICTION_X = frictionX
-    FRICTION_Y = frictionGround
-    INTERVAL = timeInterval

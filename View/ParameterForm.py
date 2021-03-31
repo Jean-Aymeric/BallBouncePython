@@ -1,6 +1,7 @@
 from Model import BallBounceModel
 import tkinter
 import random
+import math
 
 
 def parameterForm():
@@ -86,32 +87,39 @@ def parameterForm():
 def throwBall(ballWindows, x, y, speed, angle, radius, gravity, frictionX, frictionGround, timeInterval, showBall,
               showVector, traceVector):
     """ Close the ball's form and initializes the values with user's entries."""
-    global __showBall
-    global __showVector
-    global __traceVector
 
-    BallBounceModel.changeInitialData(x.get(), y.get(), speed.get(), angle.get(), radius.get(), gravity.get(),
-                                           frictionX.get(), frictionGround.get(), timeInterval.get())
-    __showBall = showBall.get()
-    __showVector = showVector.get()
-    __traceVector = traceVector.get()
+    changeInitialData(x.get(), y.get(), speed.get(), angle.get(), radius.get(), gravity.get(),
+                      frictionX.get(), frictionGround.get(), timeInterval.get())
+    BallBounceModel.showBall = showBall.get()
+    BallBounceModel.showVector = showVector.get()
+    BallBounceModel.traceVector = traceVector.get()
     ballWindows.destroy()
 
 
 def throwBallRandom(ballWindows, showBall, showVector, traceVector):
     """ Close the ball's form and initializes the values with random entries."""
-    global __showBall
-    global __showVector
-    global __traceVector
-
-    BallBounceModel.changeInitialData(random.randint(0, BallBounceModel.boxWidth),
-                                      random.randint(0, BallBounceModel.boxHeight), random.randint(0, 200),
-                                      random.randint(0, 180), random.randint(1, 200),
-                                      random.randint(0, 2000) / 100,
-                                      random.randint(80, 100) / 100,
-                                      random.randint(80, 100) / 100,
-                                      random.randint(0, 10) / 10 + 0.1)
-    __showBall = showBall.get()
-    __showVector = showVector.get()
-    __traceVector = traceVector.get()
+    changeInitialData(random.randint(0, BallBounceModel.boxWidth), random.randint(0, BallBounceModel.boxHeight),
+                      random.randint(0, 200),
+                      random.randint(0, 180), random.randint(1, 200),
+                      random.randint(0, 2000) / 100,
+                      random.randint(80, 100) / 100,
+                      random.randint(80, 100) / 100,
+                      random.randint(0, 10) / 10 + 0.1)
+    BallBounceModel.showBall = showBall.get()
+    BallBounceModel.showVector = showVector.get()
+    BallBounceModel.traceVector = traceVector.get()
     ballWindows.destroy()
+
+
+def changeInitialData(x, y, speed, angle, radius, gravity, frictionX, frictionGround, timeInterval):
+    """ Change the initial values."""
+    BallBounceModel.ball['x'] = x
+    BallBounceModel.ball['y'] = y
+    BallBounceModel.ball['speedX'] = speed * math.cos(math.radians(angle))
+    BallBounceModel.ball['speedY'] = speed * math.sin(math.radians(angle))
+    BallBounceModel.ball['angle'] = angle
+    BallBounceModel.ball['radius'] = radius
+    BallBounceModel.gravity = gravity
+    BallBounceModel.frictionX = frictionX
+    BallBounceModel.frictionGround = frictionGround
+    BallBounceModel.timeInterval = timeInterval
