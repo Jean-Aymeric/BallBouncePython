@@ -13,6 +13,7 @@ def moveBall():
             Vy(t+1) = (Vy(t) - g * Δt) * frictionX on a bounce
     """
     bounceX = False
+    bounceY = False
 
     """ Calculates the new x, x(t+1)."""
     BallBounceModel.ball['x'] += BallBounceModel.ball['speedX'] * math.cos(
@@ -38,10 +39,12 @@ def moveBall():
     """ Checks bounce on the ground."""
     if BallBounceModel.ball['y'] - BallBounceModel.ball['radius'] <= 0:
         BallBounceModel.ball['y'] = 0 + BallBounceModel.ball['radius']
-        """ Applies friction on the new speedY."""
-        BallBounceModel.ball['speedY'] = - BallBounceModel.ball['speedY'] * BallBounceModel.frictionY
-        """ Applies friction on the new speedX."""
-        BallBounceModel.ball['speedX'] = BallBounceModel.ball['speedX'] * BallBounceModel.frictionX
+        bounceY = True
+
+    """ Checks bounce on the top."""
+    if BallBounceModel.ball['y'] + BallBounceModel.ball['radius'] >= BallBounceModel.boxHeight:
+        BallBounceModel.ball['y'] = BallBounceModel.boxHeight - BallBounceModel.ball['radius']
+        bounceY = True
 
     """ Calculates the new speedY, Vy(t+1)."""
     if bounceX:
@@ -49,3 +52,9 @@ def moveBall():
         BallBounceModel.ball['angle'] = (180 - BallBounceModel.ball['angle']) % 360
         """ Applies friction on the new speedX."""
         BallBounceModel.ball['speedX'] = BallBounceModel.ball['speedX'] * BallBounceModel.frictionX
+
+    if bounceY:
+        """ Applies friction on the new speedY."""
+        BallBounceModel.ball['speedY'] = - BallBounceModel.ball['speedY'] * BallBounceModel.frictionGround
+        """ Applies friction on the new speedX."""
+        BallBounceModel.ball['speedX'] = BallBounceModel.ball['speedX'] * BallBounceModel.frictionGround

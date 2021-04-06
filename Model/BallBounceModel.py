@@ -10,7 +10,7 @@ interval = 0.4
 """ The friction on left an right, frictionX."""
 frictionX = 0.95
 """ The friction on ground, frictionY."""
-frictionY = 0.85
+frictionGround = 0.85
 """ The box width in which the ball bounces."""
 boxWidth = 800
 """ The box height in which the ball bounces."""
@@ -21,6 +21,7 @@ showBall = True
 showVector = False
 """ The box height in which the ball bounces."""
 traceVector = False
+
 
 """ The initial position x(0) of the ball."""
 INITIAL_X = 25

@@ -17,7 +17,7 @@ def parameterForm():
     radius = tkinter.DoubleVar(value=BallBounceModel.INITIAL_RADIUS)
     gravity = tkinter.DoubleVar(value=BallBounceModel.gravity)
     frictionX = tkinter.DoubleVar(value=BallBounceModel.frictionX)
-    frictionGround = tkinter.DoubleVar(value=BallBounceModel.frictionY)
+    frictionGround = tkinter.DoubleVar(value=BallBounceModel.frictionGround)
     timeInterval = tkinter.DoubleVar(value=BallBounceModel.interval)
     showBall = tkinter.BooleanVar(value=BallBounceModel.INITIAL_SHOW_BALL)
     showVector = tkinter.BooleanVar(value=BallBounceModel.INITIAL_SHOW_VECTOR)
@@ -122,4 +122,4 @@ def changeInitialData(x, y, speed, angle, radius, gravity, frictionX, frictionGr
     BallBounceModel.gravity = gravity
     BallBounceModel.frictionX = frictionX
     BallBounceModel.frictionGround = frictionGround
-    BallBounceModel.timeInterval = timeInterval
+    BallBounceModel.interval = timeInterval
